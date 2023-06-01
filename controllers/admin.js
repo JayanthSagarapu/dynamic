@@ -95,10 +95,14 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.destroy({ where: { id: prodId } })
+  Product.findAll({ where: { id: prodId } })
     .then((product) => {
-      console.log("DESTROYED PRODUCT");
+      return product.destroy();
+    })
+    .then((result) => {
       res.redirect("/admin/products");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+    });
 };
